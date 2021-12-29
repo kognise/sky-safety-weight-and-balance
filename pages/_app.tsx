@@ -20,6 +20,9 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
 				<meta name='msapplication-config' content='/browserconfig.xml' />
 				<meta name='theme-color' content='#ffffff' />
 				<meta name='mobile-web-app-capable' content='yes' />
+				<meta name='apple-mobile-web-app-capable' content='yes' />
+				<meta name='application-name' content='W&amp;B' />
+				<meta name='apple-mobile-web-app-title' content='W&amp;B' />
 			</Head>
 
 			<Component {...pageProps} />
