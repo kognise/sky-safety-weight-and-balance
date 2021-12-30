@@ -2,9 +2,22 @@ import 'styles/global.css'
 
 import { AppProps } from 'next/app'
 import Head from 'next/head'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
+	useEffect(() => {
+		let disableScroll = false
+
+		const touchListener = (event: TouchEvent) => disableScroll && event.preventDefault()
+		document.body.addEventListener('touchmove', touchListener, { passive: false })
+
+		disableScroll = true
+
+		return () => {
+			document.body.removeEventListener('touchmove', touchListener)
+		}
+	}, [])
+
 	return (
 		<>
 			<Head>
