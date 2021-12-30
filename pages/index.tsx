@@ -44,9 +44,13 @@ const IndexPage: FC = () => {
 	const [ flightFuelHrs, setFlightFuelHrs ] = useLocalState<number>('flightFuelHrs', 1)
 	const landing = sum(takeoff, { weight: -flightFuelHrs * roughFuelBurn * roughFuelWeight, arm: fuel.arm })
 
-	const takeoffSafe = findPolygons(cgLimits, [ takeoff.arm, takeoff.weight ])
+	const takeoffSafeString = findPolygons(cgLimits, [ takeoff.arm, takeoff.weight ])
+		.map((cat) => `${cat} (${cgLimits.find(({ name }) => name === cat)?.points.reduce((acc, [ , w ]) => Math.max(acc, w), 0)} lbs)`)
+		.join(', ')
+	const landingSafeString = findPolygons(cgLimits, [ landing.arm, landing.weight ])
+		.map((cat) => `${cat} (${cgLimits.find(({ name }) => name === cat)?.points.reduce((acc, [ , w ]) => Math.max(acc, w), 0)} lbs)`)
+		.join(', ')
 	const [ takeoffSafeOpen, setTakeoffSafeOpen ] = useState(false)
-	const landingSafe = findPolygons(cgLimits, [ landing.arm, landing.weight ])
 	const [ landingSafeOpen, setLandingSafeOpen ] = useState(false)
 
 	useEffect(() => {
@@ -75,9 +79,9 @@ const IndexPage: FC = () => {
 				<thead>
 					<tr>
 						<th style={{ width: '22%' }}>Item</th>
-						<th style={{ width: '38%' }}>Weight</th>
-						<th style={{ width: '20%' }}>Arm</th>
-						<th style={{ width: '20%' }}>Moment</th>
+						<th style={{ width: '38%' }}>Weight (lbs)</th>
+						<th style={{ width: '20%' }}>Arm (in)</th>
+						<th style={{ width: '20%' }}>Moment (lb-in)</th>
 					</tr>
 				</thead>
 
@@ -162,15 +166,15 @@ const IndexPage: FC = () => {
 					
 					<tr className='result'>
 						<th>Stage</th>
-						<th>Weight</th>
-						<th>CG</th>
-						<th>Moment</th>
+						<th>Weight (lbs)</th>
+						<th>CG (in)</th>
+						<th>Moment (lb-in)</th>
 					</tr>
 
 					<tr>
 						<th>
 							Takeoff{' '}
-							{takeoffSafe.length > 0 ? (
+							{takeoffSafeString.length > 0 ? (
 								<Popover
 									isOpen={takeoffSafeOpen}
 									positions={[ 'right' ]}
@@ -178,7 +182,7 @@ const IndexPage: FC = () => {
 										className='popover'
 										onMouseEnter={() => setTakeoffSafeOpen(true)}
 										onMouseLeave={() => setTakeoffSafeOpen(false)}
-									><div>Within bounds for {takeoffSafe.join(', ')} operation</div></div>}
+									><div>Within bounds for {takeoffSafeString}</div></div>}
 								>
 									<span><IoCheckmarkCircleOutline
 										onMouseEnter={() => setTakeoffSafeOpen(true)}
@@ -212,7 +216,7 @@ const IndexPage: FC = () => {
 					<tr className='result'>
 						<th>
 							Landing{' '}
-							{landingSafe.length > 0 ? (
+							{landingSafeString.length > 0 ? (
 								<Popover
 									isOpen={landingSafeOpen}
 									positions={[ 'right' ]}
@@ -220,7 +224,7 @@ const IndexPage: FC = () => {
 										className='popover'
 										onMouseEnter={() => setLandingSafeOpen(true)}
 										onMouseLeave={() => setLandingSafeOpen(false)}
-									><div>Within bounds for {landingSafe.join(', ')} operation</div></div>}
+									><div>Within bounds for {landingSafeString}</div></div>}
 								>
 									<span><IoCheckmarkCircleOutline
 										onMouseEnter={() => setLandingSafeOpen(true)}

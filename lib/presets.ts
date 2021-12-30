@@ -28,7 +28,7 @@ export interface AircraftPreset {
 
 export const models: Record<string, ModelPreset> = {
 	C172N: {
-		name: 'Cessna 172N',
+		name: '1978 Cessna 172N',
 		defaultInputs: {
 			frontSeats: { arm: 37 },
 			middleSeats: { weight: 0, arm: 0 },
@@ -63,13 +63,14 @@ export const models: Record<string, ModelPreset> = {
 		roughFuelWeight: 6
 	},
 	C172P: {
-		name: 'Cessna 172P',
+		name: '1982 Cessna 172P',
 		defaultInputs: {
 			frontSeats: { arm: 37 },
 			middleSeats: { weight: 0, arm: 0 },
 			rearSeats: { arm: 73 },
 			bags1: { arm: 95 },
-			bags2: { arm: 123 }
+			bags2: { arm: 123 },
+			fuel: { arm: 48 }
 		},
 		cgLimits: [
 			{
@@ -120,7 +121,7 @@ export const aircraft: Record<string, AircraftPreset> = {
 		defaultInputs: {
 			empty: { weight: 1502.1, arm: 39.17 },
 			rearSeats: { weight: 3 },
-			fuel: { weight: 372, arm: 48 }
+			fuel: { weight: 372 }
 		}
 	},
 	N63681: {
@@ -128,7 +129,7 @@ export const aircraft: Record<string, AircraftPreset> = {
 		defaultInputs: {
 			empty: { weight: 1533.9, arm: 38.79 },
 			rearSeats: { weight: 3 },
-			fuel: { weight: 240, arm: 47.9 }
+			fuel: { weight: 240 }
 		}
 	}
 }
