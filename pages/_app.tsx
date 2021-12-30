@@ -9,7 +9,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
 		let disableScroll = false
 
 		const touchListener = (event: TouchEvent) => disableScroll && event.preventDefault()
-		document.body.addEventListener('touchmove', touchListener, { passive: false })
+		// document.body.addEventListener('touchmove', touchListener, { passive: false })
 
 		disableScroll = true
 
