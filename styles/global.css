@@ -1,108 +1,165 @@
+* {
+	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent; 
+}
+
+:root {
+	--background-base: #ffffff;
+	--background-light: #f8f9fa;
+	--foreground: #000000;
+	--border-color: #dee2e6;
+	--positive-background: #ebfbee;
+	--positive-border: #b2f2bb;
+	--positive-foreground: #205c2c;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background-base: #000000;
+		--background-light: #212529;
+		--foreground: #ffffff;
+		--border-color: #343a40;
+		--positive-background: #0a1e0e;
+		--positive-border: #205c2c;
+		--positive-foreground: #d3f9d8;
+	}
+}
+
 body {
-	--light-background: #f8f9fa;
-	--border-color: #ced4da;
 	margin: 0;
 	font-family: ui-sans-serif, 'Inter', sans-serif;
+	padding: 32px;
 	height: 100vh;
+	background: var(--background-base);
+	color: var(--foreground);
+}
+
+#__next, .container {
+	height: 100%;
+}
+
+.container {
 	display: flex;
 	flex-direction: column;
+}
+
+header {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	justify-content: space-between;
 	align-items: center;
-	/* justify-content: center; */
+	/* margin-bottom: -32px; */
+
+	& h1 {
+		margin: 0;
+		font-size: 2.4rem;
+		user-select: none;
+	}
+
+	& .preset-container {
+		user-select: none;
+
+		& select {
+			width: 100px;
+		}
+	}
 }
 
 main {
-	max-width: 800px;
-	padding: 16px;
-	text-align: center;
-}
-
-h1 {
-	margin: 0;
-	margin-top: 80px;
-	font-size: 2.4rem;
-	margin-bottom: 16px;
-	user-select: none;
-}
-
-.preset-container {
-	margin-bottom: 60px;
-	user-select: none;
-}
-
-select {
-	display: inline-block;
-	background: var(--light-background);
-	font-family: inherit;
-	font-size: 0.8em;
-	color: inherit;
-	border: 1px solid var(--border-color);
-	padding: 4px;
-	box-size: border-box;
-	cursor: pointer;
-	-webkit-appearance: none;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
 table {
 	font-variant-numeric: tabular-nums;
 	text-align: left;
-	border-collapse: collapse;
 	border: 2px solid var(--border-color);
+	border-collapse: collapse;
 	width: 100%;
-}
+	border-radius: 10px;
 
-table th {
-	user-select: none;
-}
+	& tr {
+		border-top: 1px solid var(--border-color);
 
-tbody th:only-of-type {
-	font-weight: normal;
-}
+		&.result {
+			border-top: 2px dashed var(--border-color);
+		}
+	}
 
-table tr {
-	border: 1px solid var(--border-color);
-}
+	& td, & th {
+		padding: 8px;
+	}
 
-table td, th {
-	padding: 4px;
-}
+	& th {
+		user-select: none;
+	}
 
-table .result {
-	border-top: 2px dashed var(--border-color);
-}
+	& tbody th:only-of-type {
+		font-weight: normal;
+	}
 
-table input {
-	font-size: inherit;
-	font-family: inherit;
-	border: none;
-	display: inline-block;
-	flex: 1;
-	width: 100%;
-	text-decoration: #3965dd underline;
-	border-radius: 0;
-	padding: 0;
-}
+	& input {
+		font-size: inherit;
+		font-family: inherit;
+		border: none;
+		display: inline-block;
+		flex: 1;
+		width: 100%;
+		text-decoration: #3965dd underline;
+		border-radius: 0;
+		padding: 0;
+		outline: none;
+		background: inherit;
+		color: inherit;
+	}
 
-table .safety {
-	font-size: 1.2em;
-	vertical-align: -15%;
-}
+	& .safety {
+		font-size: 1.2em;
+		vertical-align: -15%;
 
-table .safety.positive {
-	color: #37b24d;
-}
+		&.positive {
+			color: #37b24d;
+		}
 
-table .safety.negative {
-	color: #f03e3e;
+		&.negative {
+			color: #f03e3e;
+		}
+	}
 }
 
 .popover {
 	padding: 4px;
 	user-select: none;
+
+	&>div {
+		background-color: var(--background-light);
+		border: 1px solid var(--border-color);
+		padding: 14px;
+		font-size: 0.9em;
+	}
+
+	&.positive>div {
+		background-color: var(--positive-background);
+		border: 1px solid var(--positive-border);
+		color: var(--positive-foreground);
+	}
 }
 
-.popover>div {
-	background-color: var(--light-background);
+select {
+	display: inline-block;
+	background: var(--background-light) svg-load('select-arrow.svg', fill: #737a81) calc(100% - 8px) 50% / 0.9em no-repeat;
 	padding: 8px;
-	font-size: 0.8em;
+	padding-right: calc(12px + 0.9em);
+	font-family: inherit;
+	font-size: 0.9em;
+	color: inherit;
 	border: 1px solid var(--border-color);
+	box-size: border-box;
+	cursor: pointer;
+	outline: none;
+	-webkit-appearance: none;
 }

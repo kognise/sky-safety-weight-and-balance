@@ -6,17 +6,42 @@ import React, { FC, useEffect } from 'react'
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
 	useEffect(() => {
-		let disableScroll = false
+		// Disable rubber-band scrolling on iOS if the viewport isn't scrollable
+		// Side-effect is that this breaks any touch-move-powered things, but we don't have any right now
+		const touchListener = (event: TouchEvent) => document.body.scrollHeight <= document.body.clientHeight && event.preventDefault()
+		document.body.addEventListener('touchmove', touchListener, { passive: false })
+		return () => document.body.removeEventListener('touchmove', touchListener)
+	}, [])
 
-		const touchListener = (event: TouchEvent) => disableScroll && event.preventDefault()
-		// document.body.addEventListener('touchmove', touchListener, { passive: false })
+	useEffect(() => {
+		// Fix iOS keyboard pushing up body and then *leaving it there*
+		// Breaks if you scroll while in the input but who cares this is a tiny app
+		let focusScrollTop: number = document.body.scrollTop
 
-		disableScroll = true
+		const focusListener = () => focusScrollTop = document.body.scrollTop
+		document.body.addEventListener('focus', focusListener, { passive: true, capture: true })
+
+		const blurListener = () => {
+			window.scrollTo(document.body.scrollLeft, focusScrollTop)
+		}
+		document.body.addEventListener('blur', blurListener, { passive: true, capture: true })
 
 		return () => {
-			document.body.removeEventListener('touchmove', touchListener)
+			document.body.removeEventListener('focus', focusListener)
+			document.body.removeEventListener('blur', blurListener)
 		}
 	}, [])
+
+	useEffect(() => {
+		// Sync the theme-color with the preferred theme-color
+		const match = window.matchMedia('(prefers-color-scheme: dark)')
+		const updateThemeColor = () => {
+			(document.getElementById('theme-color') as HTMLMetaElement).content = match.matches ? '#000000' : '#ffffff'
+		}
+		match.addEventListener('change', updateThemeColor)
+		updateThemeColor()
+		return () => match.removeEventListener('change', updateThemeColor)
+	})
 
 	return (
 		<>
@@ -31,11 +56,11 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
 				<link rel='shortcut icon' href='/favicon.ico' />
 				<meta name='msapplication-TileColor' content='#143588' />
 				<meta name='msapplication-config' content='/browserconfig.xml' />
-				<meta name='theme-color' content='#ffffff' />
 				<meta name='mobile-web-app-capable' content='yes' />
 				<meta name='apple-mobile-web-app-capable' content='yes' />
 				<meta name='application-name' content='W&amp;B' />
 				<meta name='apple-mobile-web-app-title' content='W&amp;B' />
+				<meta name='theme-color' content='#ffffff' id='theme-color' />
 
 				<link href='splashscreens/iphone5_splash.png' media='(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)' rel='apple-touch-startup-image' />
 				<link href='splashscreens/iphone6_splash.png' media='(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)' rel='apple-touch-startup-image' />
