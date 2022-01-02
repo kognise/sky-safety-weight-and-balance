@@ -80,173 +80,175 @@ const IndexPage: FC = () => {
 			</header>
 		
 			<main>
-				<table>
-					<thead>
-						<tr>
-							<th style={{ width: '24%' }}>Item</th>
-							<th style={{ width: '36%' }}>Weight (lbs)</th>
-							<th style={{ width: '20%' }}>Arm (in)</th>
-							<th style={{ width: '20%' }}>Moment (lb-in)</th>
-						</tr>
-					</thead>
+				<div className='table-container'>
+					<table>
+						<thead>
+							<tr>
+								<th style={{ width: '24%' }}>Item</th>
+								<th style={{ width: '36%' }}>Weight (lbs)</th>
+								<th style={{ width: '20%' }}>Arm (in)</th>
+								<th style={{ width: '20%' }}>Moment (lb-in)</th>
+							</tr>
+						</thead>
 
-					<tbody>
-						{Object.entries(mainInputs).map(([ _key, value ]: [ string, WeightArm ]) => {
-							const key = _key as keyof MainInputs
-							return (
-								<tr key={key}>
-									<th>{mainInputsLabels[key]}</th>
-									<td>
-										<input
-											type='number'
-											min={0}
-											value={mainInputs[key].weight}
-											onChange={(event) => setMainInputs({
-												...mainInputs,
-												[key]: {
-													...value,
-													weight: parseFloat(event.target.value)
-												}
-											})}
-										/>
-									</td>
-									<td>
-										<input
-											type='number'
-											min={0}
-											value={mainInputs[key].arm}
-											onChange={(event) => setMainInputs({
-												...mainInputs,
-												[key]: {
-													...value,
-													arm: parseFloat(event.target.value)
-												}
-											})}
-										/>
-									</td>
-									<td>{(value.weight * value.arm).toFixed(2)}</td>
-								</tr>
-							)
-						})}
+						<tbody>
+							{Object.entries(mainInputs).map(([ _key, value ]: [ string, WeightArm ]) => {
+								const key = _key as keyof MainInputs
+								return (
+									<tr key={key}>
+										<th>{mainInputsLabels[key]}</th>
+										<td>
+											<input
+												type='number'
+												min={0}
+												value={mainInputs[key].weight}
+												onChange={(event) => setMainInputs({
+													...mainInputs,
+													[key]: {
+														...value,
+														weight: parseFloat(event.target.value)
+													}
+												})}
+											/>
+										</td>
+										<td>
+											<input
+												type='number'
+												min={0}
+												value={mainInputs[key].arm}
+												onChange={(event) => setMainInputs({
+													...mainInputs,
+													[key]: {
+														...value,
+														arm: parseFloat(event.target.value)
+													}
+												})}
+											/>
+										</td>
+										<td>{(value.weight * value.arm).toFixed(2)}</td>
+									</tr>
+								)
+							})}
 
-						<tr className='result'>
-							<th>Weight (no fuel)</th>
-							<td>{dryWeight.weight.toFixed(2)}</td>
-							<td>{dryWeight.arm.toFixed(2)}</td>
-							<td>{dryWeight.moment.toFixed(2)}</td>
-						</tr>
+							<tr className='result'>
+								<th>Weight (no fuel)</th>
+								<td>{dryWeight.weight.toFixed(2)}</td>
+								<td>{dryWeight.arm.toFixed(2)}</td>
+								<td>{dryWeight.moment.toFixed(2)}</td>
+							</tr>
 
-						<tr>
-							<th>Fuel</th>
-							<td>
-								<input
-									type='number' min={0} value={fuelGal}
-									onChange={(event) => setFuelGal(parseFloat(event.target.value))}
-									style={{ maxWidth: '5ch' }}
-								/>
-							&nbsp;gal = {fuel.weight.toFixed(2)}
-							</td>
-							<td>
-								<input
-									type='number' min={0} value={fuel.arm}
-									onChange={(event) => setFuel({ ...fuel, arm: parseFloat(event.target.value) })}
-								/>
-							</td>
-							<td>{(fuel.weight * fuel.arm).toFixed(2)}</td>
-						</tr>
+							<tr>
+								<th>Fuel</th>
+								<td>
+									<input
+										type='number' min={0} value={fuelGal}
+										onChange={(event) => setFuelGal(parseFloat(event.target.value))}
+										style={{ maxWidth: '5ch' }}
+									/>
+									&nbsp;gal = {fuel.weight.toFixed(2)}
+								</td>
+								<td>
+									<input
+										type='number' min={0} value={fuel.arm}
+										onChange={(event) => setFuel({ ...fuel, arm: parseFloat(event.target.value) })}
+									/>
+								</td>
+								<td>{(fuel.weight * fuel.arm).toFixed(2)}</td>
+							</tr>
 
-						<tr>
-							<th>Start/taxi fuel</th>
-							<td>
-								<input
-									type='number' min={0} value={taxiFuelGal}
-									onChange={(event) => setTaxiFuelGal(parseFloat(event.target.value))}
-									style={{ maxWidth: '5ch' }}
-								/>
-							&nbsp;gal = {(-taxiFuelGal * roughFuelWeight).toFixed(2)}
-							</td>
-							<td>{fuel.arm.toFixed(2)}</td>
-							<td>{(-taxiFuelGal * roughFuelWeight * fuel.arm).toFixed(2)}</td>
-						</tr>
+							<tr>
+								<th>Start/taxi fuel</th>
+								<td>
+									<input
+										type='number' min={0} value={taxiFuelGal}
+										onChange={(event) => setTaxiFuelGal(parseFloat(event.target.value))}
+										style={{ maxWidth: '5ch' }}
+									/>
+									&nbsp;gal = {(-taxiFuelGal * roughFuelWeight).toFixed(2)}
+								</td>
+								<td>{fuel.arm.toFixed(2)}</td>
+								<td>{(-taxiFuelGal * roughFuelWeight * fuel.arm).toFixed(2)}</td>
+							</tr>
 					
-						<tr className='result'>
-							<th>Stage</th>
-							<th>Weight (lbs)</th>
-							<th>CG (in)</th>
-							<th>Moment (lb-in)</th>
-						</tr>
+							<tr className='result'>
+								<th>Stage</th>
+								<th>Weight (lbs)</th>
+								<th>CG (in)</th>
+								<th>Moment (lb-in)</th>
+							</tr>
 
-						<tr>
-							<th>
-							Takeoff{' '}
-								{takeoffSafeString.length > 0 ? (
-									<Popover
-										isOpen={takeoffSafeOpen}
-										positions={[ 'left', 'right' ]}
-										content={<div
-											className='popover positive'
-											onMouseEnter={() => setTakeoffSafeOpen(true)}
-											onMouseLeave={() => setTakeoffSafeOpen(false)}
-										><div>Within bounds for {takeoffSafeString}</div></div>}
-									>
-										<span><IoCheckmarkCircleOutline
-											onMouseEnter={() => setTakeoffSafeOpen(true)}
-											onMouseLeave={() => setTakeoffSafeOpen(false)}
-											className='safety positive'
-										/></span>
-									</Popover>
-								) : (
-									<IoAlertCircleOutline className='safety negative' />
-								)}
-							</th>
-							<td>{takeoff.weight.toFixed(2)}</td>
-							<td>{takeoff.arm.toFixed(2)}</td>
-							<td>{takeoff.moment.toFixed(2)}</td>
-						</tr>
+							<tr>
+								<th>
+									Takeoff{' '}
+									{takeoffSafeString.length > 0 ? (
+										<Popover
+											isOpen={takeoffSafeOpen}
+											positions={[ 'left', 'right' ]}
+											content={<div
+												className='popover positive'
+												onMouseEnter={() => setTakeoffSafeOpen(true)}
+												onMouseLeave={() => setTakeoffSafeOpen(false)}
+											><div>Within bounds for {takeoffSafeString}</div></div>}
+										>
+											<span><IoCheckmarkCircleOutline
+												onMouseEnter={() => setTakeoffSafeOpen(true)}
+												onMouseLeave={() => setTakeoffSafeOpen(false)}
+												className='safety positive'
+											/></span>
+										</Popover>
+									) : (
+										<IoAlertCircleOutline className='safety negative' />
+									)}
+								</th>
+								<td>{takeoff.weight.toFixed(2)}</td>
+								<td>{takeoff.arm.toFixed(2)}</td>
+								<td>{takeoff.moment.toFixed(2)}</td>
+							</tr>
 
-						<tr>
-							<th>Fuel used</th>
-							<td>
-								<input
-									type='number' min={0} value={flightFuelHrs}
-									onChange={(event) => setFlightFuelHrs(parseFloat(event.target.value))}
-									style={{ maxWidth: '5ch' }}
-								/>
-							&nbsp;hrs = {(flightFuelHrs * roughFuelBurn).toFixed(2)} gal = {(-flightFuelHrs * roughFuelBurn * roughFuelWeight).toFixed(2)}
-							</td>
-							<td>{fuel.arm.toFixed(2)}</td>
-							<td>{(-flightFuelHrs * roughFuelBurn * roughFuelWeight * fuel.arm).toFixed(2)}</td>
-						</tr>
+							<tr>
+								<th>Fuel used</th>
+								<td>
+									<input
+										type='number' min={0} value={flightFuelHrs}
+										onChange={(event) => setFlightFuelHrs(parseFloat(event.target.value))}
+										style={{ maxWidth: '5ch' }}
+									/>
+									&nbsp;hrs = {(flightFuelHrs * roughFuelBurn).toFixed(2)} gal = {(-flightFuelHrs * roughFuelBurn * roughFuelWeight).toFixed(2)}
+								</td>
+								<td>{fuel.arm.toFixed(2)}</td>
+								<td>{(-flightFuelHrs * roughFuelBurn * roughFuelWeight * fuel.arm).toFixed(2)}</td>
+							</tr>
 
-						<tr className='result'>
-							<th>
-							Landing{' '}
-								{landingSafeString.length > 0 ? (
-									<Popover
-										isOpen={landingSafeOpen}
-										positions={[ 'left', 'right' ]}
-										content={<div
-											className='popover positive'
-											onMouseEnter={() => setLandingSafeOpen(true)}
-											onMouseLeave={() => setLandingSafeOpen(false)}
-										><div>Within bounds for {landingSafeString}</div></div>}
-									>
-										<span><IoCheckmarkCircleOutline
-											onMouseEnter={() => setLandingSafeOpen(true)}
-											onMouseLeave={() => setLandingSafeOpen(false)}
-											className='safety positive'
-										/></span>
-									</Popover>
-								) : (
-									<IoAlertCircleOutline className='safety negative' />
-								)}
-							</th>
-							<td>{landing.weight.toFixed(2)}</td>
-							<td>{landing.arm.toFixed(2)}</td>
-							<td>{landing.moment.toFixed(2)}</td>
-						</tr>
-					</tbody>
-				</table>
+							<tr className='result'>
+								<th>
+									Landing{' '}
+									{landingSafeString.length > 0 ? (
+										<Popover
+											isOpen={landingSafeOpen}
+											positions={[ 'left', 'right' ]}
+											content={<div
+												className='popover positive'
+												onMouseEnter={() => setLandingSafeOpen(true)}
+												onMouseLeave={() => setLandingSafeOpen(false)}
+											><div>Within bounds for {landingSafeString}</div></div>}
+										>
+											<span><IoCheckmarkCircleOutline
+												onMouseEnter={() => setLandingSafeOpen(true)}
+												onMouseLeave={() => setLandingSafeOpen(false)}
+												className='safety positive'
+											/></span>
+										</Popover>
+									) : (
+										<IoAlertCircleOutline className='safety negative' />
+									)}
+								</th>
+								<td>{landing.weight.toFixed(2)}</td>
+								<td>{landing.arm.toFixed(2)}</td>
+								<td>{landing.moment.toFixed(2)}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</main>
 		</div>
 	)
