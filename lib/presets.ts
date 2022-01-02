@@ -28,7 +28,7 @@ export interface AircraftPreset {
 
 export const models: Record<string, ModelPreset> = {
 	C172N: {
-		name: '1978 Cessna 172N',
+		name: 'Cessna 172N (1978)',
 		defaultInputs: {
 			frontSeats: { arm: 37 },
 			middleSeats: { weight: 0, arm: 0 },
@@ -63,7 +63,7 @@ export const models: Record<string, ModelPreset> = {
 		roughFuelWeight: 6
 	},
 	C172P: {
-		name: '1982 Cessna 172P',
+		name: 'Cessna 172P (1982)',
 		defaultInputs: {
 			frontSeats: { arm: 37 },
 			middleSeats: { weight: 0, arm: 0 },

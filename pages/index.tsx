@@ -68,10 +68,10 @@ const IndexPage: FC = () => {
 				<div className='preset-container'>
 					<label htmlFor='preset-input'>Preset:</label>{' '}
 					<select id='preset-input' value={presetName} onChange={(event) => setPresetName(event.target.value)}>
-						{Object.values(models).map((model) => (
-							<optgroup label={model.name} key={model.name}>
-								{Object.entries(aircraft).filter(([ , value ]) => value.model === model).map(([ key ]) => (
-									<option key={key} value={key}>{key}</option>
+						{Object.entries(models).map(([ modelKey, model ]) => (
+							<optgroup label={model.name} key={modelKey}>
+								{Object.entries(aircraft).filter(([ , aircraft ]) => aircraft.model === model).map(([ ident ]) => (
+									<option key={ident} value={ident}>{ident}</option>
 								))}
 							</optgroup>
 						))}
