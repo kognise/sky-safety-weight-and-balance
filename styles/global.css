@@ -27,7 +27,7 @@
 
 body {
 	margin: 0;
-	font-family: ui-sans-serif, 'Inter', sans-serif;
+	font-family: ui-rounded, 'Inter', sans-serif;
 	padding: 32px;
 	height: 100vh;
 	background: var(--background-base);
