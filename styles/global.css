@@ -9,6 +9,7 @@
 	--background-base: #ffffff;
 	--background-light: #f8f9fa;
 	--foreground: #000000;
+	--highlight-dim: #4c67b1;
 	--highlight: #228be6;
 	--border-color: #dee2e6;
 	--positive-background: #ebfbee;
@@ -120,12 +121,16 @@ table {
 		width: 100%;
 		text-decoration: underline;
 		text-decoration-thickness: 1.5px;
-		text-decoration-color: var(--highlight); /* This has to be a separate statement in Safari? */
+		text-decoration-color: var(--highlight-dim); /* This has to be a separate statement in Safari? */
 		border-radius: 0;
 		padding: 0;
 		outline: none;
 		background: inherit;
 		color: inherit;
+
+		&:focus {
+			text-decoration-color: var(--highlight);
+		}
 	}
 
 	& .safety {
