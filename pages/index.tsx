@@ -32,7 +32,8 @@ const IndexPage: FC = () => {
 
 	const [ presetName, setPresetName ] = useLocalState('presetName', Object.keys(aircraft)[0])
 	const preset = aircraft[presetName]
-	const { cgLimits, roughFuelBurn, roughFuelWeight } = preset.model
+	const { cgLimits, roughFuelBurn: _roughFuelBurn, roughFuelWeight } = preset.model
+	const [ roughFuelBurn, setRoughFuelBurn ] = useLocalState<number>('roughFuelBurn', _roughFuelBurn)
 
 	const [ fuel, setFuel ] = useLocalState<WeightArm>('fuel', { weight: 0, arm: 0 })
 	const [ fuelGal, setFuelGal ] = useLocalState<number>('fuelGal', 0)
@@ -58,6 +59,7 @@ const IndexPage: FC = () => {
 		setMainInputs((val) => mergeDefaultInputs(val, defaultInputs) as MainInputs)
 		if (fuel?.arm) setFuel((val) => ({ ...val, arm: fuel.arm as number }))
 		if (fuel?.weight) setFuelGal(parseFloat((fuel.weight / roughFuelWeight).toFixed(2)))
+		setRoughFuelBurn(preset.model.roughFuelBurn)
 	}, [ presetName ])
 
 	return (
@@ -211,9 +213,13 @@ const IndexPage: FC = () => {
 									<input
 										type='number' min={0} value={flightFuelHrs}
 										onChange={(event) => setFlightFuelHrs(parseFloat(event.target.value))}
-										style={{ maxWidth: '5ch' }}
+										style={{ maxWidth: '4ch' }}
 									/>
-									&nbsp;hrs = {(flightFuelHrs * roughFuelBurn).toFixed(2)} gal = {(-flightFuelHrs * roughFuelBurn * roughFuelWeight).toFixed(2)}
+									&nbsp;hrs &times; -<input
+										type='number' min={0} value={roughFuelBurn}
+										onChange={(event) => setRoughFuelBurn(parseFloat(event.target.value))}
+										style={{ maxWidth: '4ch' }}
+									/>&nbsp;gph &times; {roughFuelWeight} lbs = {(-flightFuelHrs * roughFuelBurn * roughFuelWeight).toFixed(2)}
 								</td>
 								<td>{fuel.arm.toFixed(2)}</td>
 								<td>{(-flightFuelHrs * roughFuelBurn * roughFuelWeight * fuel.arm).toFixed(2)}</td>
